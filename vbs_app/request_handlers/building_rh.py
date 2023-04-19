@@ -55,7 +55,7 @@ class BuildingRequestHandler(RequestHandler):
 
             building = manager.add_building(name)
             serializer = serializers.BuildingSerializer(building, many=False)
-            return response_handler.get_success_response(serializer.data, "Building added successfully")
+            return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.UPDATE_EXISTING_BUILDING:
             building_id = request_data.get('building_id')
@@ -73,7 +73,7 @@ class BuildingRequestHandler(RequestHandler):
 
             building = manager.update_building(building, name)
             serializer = serializers.BuildingSerializer(building, many=False)
-            return response_handler.get_success_response(serializer.data, "Building updated successfully")
+            return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.REMOVE_EXISTING_BUILDING:
             building_id = request_data.get('building_id')
@@ -83,6 +83,6 @@ class BuildingRequestHandler(RequestHandler):
                 return not_valid_response
 
             manager.delete_building(building_id)
-            return response_handler.get_success_response(None, "Building removed successfully")
+            return response_handler.get_success_response(None)
 
         return response_handler.get_bad_request_response()

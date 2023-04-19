@@ -127,7 +127,7 @@ class VenueRequestHandler(RequestHandler):
                                       has_air_conditioner, has_projectors, has_speakers, has_whiteboard, authority_id)
 
             serializer = serializers.VenueSerializer(venue, many=False)
-            return response_handler.get_success_response(serializer.data, "Venue added successfully")
+            return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.UPDATE_EXISTING_VENUE:
             venue_id = request_data.get('venue_id')
@@ -195,7 +195,7 @@ class VenueRequestHandler(RequestHandler):
                                          authority_id)
 
             serializer = serializers.VenueSerializer(venue, many=False)
-            return response_handler.get_success_response(serializer.data, "Venue updated successfully")
+            return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.REMOVE_EXISTING_VENUE:
             venue_id = request_data.get('venue_id')
@@ -205,6 +205,6 @@ class VenueRequestHandler(RequestHandler):
                 return not_valid_response
 
             manager.delete_venue(venue_id)
-            return response_handler.get_success_response(None, "Venue deleted successfully")
+            return response_handler.get_success_response(None)
 
         return response_handler.get_bad_request_response()

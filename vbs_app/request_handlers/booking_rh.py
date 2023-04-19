@@ -180,7 +180,7 @@ class BookingRequestHandler(RequestHandler):
 
             booking = booking_helper.update_booking_time(booking_id, event_time, event_duration)
             serializer = serializers.BookingSerializer(booking, many=False)
-            return response_handler.get_success_response(serializer, "Booking time updated successfully")
+            return response_handler.get_success_response(serializer)
 
         if request_type == RequestType.UPDATE_BOOKING:
             booking_id = request_data.get('booking_id')
@@ -201,7 +201,7 @@ class BookingRequestHandler(RequestHandler):
 
             booking = manager.update_booking(booking_id, expected_strength, description)
             serializer = serializers.BookingSerializer(booking, many=False)
-            return response_handler.get_success_response(serializer.data, "Booking updated successfully")
+            return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestType.CANCEL_BOOKING:
             booking_id = request_data.get('booking_id')
@@ -212,7 +212,7 @@ class BookingRequestHandler(RequestHandler):
 
             booking = booking_helper.cancel_booking(booking_id)
             serializer = serializers.BookingSerializer(booking, many=False)
-            return response_handler.get_success_response(serializer.data, "Booking cancelled successfully")
+            return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestType.UPDATE_BOOKING_REQUEST:
             booking_request_id = request_data.get("booking_request_id")

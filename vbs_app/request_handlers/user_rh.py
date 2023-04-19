@@ -1,4 +1,4 @@
-from .. import serializers, manager, response_handler, validator
+from .. import serializers, manager, response_handler, validator, google_token_handler
 from ..request_handler import RequestHandler
 from enum import Enum
 
@@ -6,9 +6,10 @@ from enum import Enum
 class RequestTypes(Enum):
     GET_ALL_USERS = 0
     GET_USER_DETAILS = 1
-    ADD_NEW_USER = 2
-    UPDATE_EXISTING_USER = 3
-    REMOVE_EXISTING_USER = 4
+    LOGIN_USER_USING_CREDENTIALS = 2
+    ADD_NEW_USER = 3
+    UPDATE_EXISTING_USER = 4
+    REMOVE_EXISTING_USER = 5
 
 
 class UserRequestHandler(RequestHandler):
@@ -32,6 +33,20 @@ class UserRequestHandler(RequestHandler):
         return response_handler.get_bad_request_response()
 
     def _handle_post_request(self, request_type, request_data):
+        if request_type == RequestTypes.LOGIN_USER_USING_CREDENTIALS:
+            credential = request_data.get('credential')
+            is_verified, email = google_token_handler.verify_oauth_token(credential)
+
+            if not is_verified:
+                return response_handler.get_invalid_parameters_response("credential")
+
+            if not manager.check_user_exists(email):
+                return response_handler.get_not_found_response("User")
+
+            user = manager.get_user_by_id(email)
+            serializer = serializers.UserSerializer(user)
+            return response_handler.get_success_response(serializer.data)
+
         if request_type == RequestTypes.ADD_NEW_USER:
             email = request_data.get('email')
             name = request_data.get('name')
@@ -70,7 +85,7 @@ class UserRequestHandler(RequestHandler):
 
             user = manager.add_new_user(email, name, parent, require_parent_permission, is_admin, is_authority)
             serializer = serializers.UserSerializer(user, many=False)
-            return response_handler.get_success_response(serializer.data, "User added successfully")
+            return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.UPDATE_EXISTING_USER:
             email = request_data.get('email')
@@ -110,7 +125,7 @@ class UserRequestHandler(RequestHandler):
             user = manager.update_user(user, name, parent, require_parent_permission, is_admin, is_authority)
 
             serializer = serializers.UserSerializer(user, many=False)
-            return response_handler.get_success_response(serializer.data, "User updated Successfully")
+            return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.REMOVE_EXISTING_USER:
             email = request_data.get('email')
@@ -120,6 +135,6 @@ class UserRequestHandler(RequestHandler):
                 return not_valid_response
 
             manager.delete_user(email)
-            return response_handler.get_success_response(None, "User removed successfully")
+            return response_handler.get_success_response(None)
 
         return response_handler.get_bad_request_response()

@@ -68,6 +68,6 @@ class CommentsRequestHandler(RequestHandler):
 
             comment = manager.add_comment(user_id, booking_id, comment_content)
             serializer = serializers.CommentsSerializer(comment, many=False)
-            return response_handler.get_success_response(serializer.data, "Comment added successfully")
+            return response_handler.get_success_response(serializer.data)
 
         return response_handler.get_bad_request_response()

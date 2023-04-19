@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('users/details/all/', views.get_all_users),
+    path('users/login/', views.login_using_credentials),
     path('users/details/<str:email>/', views.get_user_details),
     path('users/add/', views.add_new_user),
     path('users/update/', views.update_existing_user),
@@ -15,7 +15,6 @@ urlpatterns = [
     path('buildings/update/', views.update_existing_building),
     path('buildings/remove/', views.remove_existing_building),
 
-    path('venues/details/all/', views.get_all_venues),
     path('venues/details/byBuilding/<str:building_id>/', views.get_venues_by_building),
     path('venues/details/byAuthority/<str:authority_id>/', views.get_venues_by_authority),
     path('venues/details/<str:venue_id>/', views.get_venue_details),
@@ -26,8 +25,8 @@ urlpatterns = [
 
     path('bookings/details/byUser/<str:user_id>/', views.get_bookings_by_user),
     path('bookings/details/byVenue/<str:venue_id>/', views.get_bookings_by_venue),
+    path('bookings/details/byVenue/<str:venue_id>/byDay/', views.get_venue_bookings_by_day),
     path('bookings/details/<str:booking_id>/', views.get_booking_details),
-    path('bookings/details/byVenueAndTime/<str:venue_id>/', views.get_venue_bookings_by_day),
     path('bookings/bookingRequests/<str:booking_id>/', views.get_booking_requests_by_booking),
     path('bookings/bookingRequests/byReceiver/<str:receiver_id>/', views.get_booking_requests_by_receiver),
     path('bookings/bookingRequests/details/<str:booking_request_id>/', views.get_booking_request),

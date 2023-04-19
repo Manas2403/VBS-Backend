@@ -275,7 +275,7 @@ def get_booking_request_by_booking(booking_id):
 
 
 def get_booking_request_by_receiver(receiver_id):
-    return BookingRequest.objects.find(receiver_id=receiver_id)
+    return BookingRequest.objects.filter(receiver_id=receiver_id)
 
 
 def get_all_booking_requests():

@@ -8,6 +8,11 @@ from .request_handlers import comment_rh
 
 
 @api_view(['GET', 'POST'])
+def login_using_credentials(request):
+    return user_rh.UserRequestHandler().handle_login_request(request, user_rh.RequestTypes.LOGIN_USER_USING_CREDENTIALS)
+
+
+@api_view(['GET', 'POST'])
 def get_all_users(request):
     return user_rh.UserRequestHandler().handle_request(request, user_rh.RequestTypes.GET_ALL_USERS)
 

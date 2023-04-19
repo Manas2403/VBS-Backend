@@ -2,13 +2,11 @@ from rest_framework import serializers
 
 
 class ResponseData:
-    response_status = ""
-    response_message = ""
+    response_message = None
     response_data = None
 
 
 class ResponseSerializer(serializers.Serializer):
-    response_status = serializers.CharField(max_length=10)
     response_message = serializers.CharField(max_length=200)
     response_data = serializers.JSONField()
 
