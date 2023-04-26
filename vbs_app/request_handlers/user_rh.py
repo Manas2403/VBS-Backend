@@ -6,10 +6,11 @@ from enum import Enum
 class RequestTypes(Enum):
     GET_ALL_USERS = 0
     GET_USER_DETAILS = 1
-    LOGIN_USER_USING_CREDENTIALS = 2
-    ADD_NEW_USER = 3
-    UPDATE_EXISTING_USER = 4
-    REMOVE_EXISTING_USER = 5
+    GET_USERS_BY_SEARCH = 2
+    LOGIN_USER_USING_CREDENTIALS = 3
+    ADD_NEW_USER = 4
+    UPDATE_EXISTING_USER = 5
+    REMOVE_EXISTING_USER = 6
 
 
 class UserRequestHandler(RequestHandler):
@@ -28,6 +29,18 @@ class UserRequestHandler(RequestHandler):
 
             user = manager.get_user_by_id(email)
             serializer = serializers.UserSerializer(user, many=False)
+            return response_handler.get_success_response(serializer.data)
+
+        if request_type == RequestTypes.GET_USERS_BY_SEARCH:
+            name = request_params.get('name')
+
+            if name is None:
+                return response_handler.get_missing_parameters_response("name")
+            if name == "" or not isinstance(name, str):
+                return response_handler.get_invalid_parameters_response("name")
+
+            users = manager.get_users_by_name(name)
+            serializer = serializers.UserSerializer(users, many=True)
             return response_handler.get_success_response(serializer.data)
 
         return response_handler.get_bad_request_response()

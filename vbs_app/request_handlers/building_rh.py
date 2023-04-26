@@ -20,7 +20,7 @@ class BuildingRequestHandler(RequestHandler):
             return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.GET_BUILDING_DETAILS:
-            building_id = request_params.get('building_id')
+            building_id = request_params.get('id')
 
             is_valid, not_valid_response = validator.validate_building_id(building_id)
             if not is_valid:
@@ -58,7 +58,7 @@ class BuildingRequestHandler(RequestHandler):
             return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.UPDATE_EXISTING_BUILDING:
-            building_id = request_data.get('building_id')
+            building_id = request_data.get('id')
             name = request_data.get('name')
 
             is_valid, not_valid_response = validator.validate_building_id(building_id)
@@ -76,7 +76,7 @@ class BuildingRequestHandler(RequestHandler):
             return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.REMOVE_EXISTING_BUILDING:
-            building_id = request_data.get('building_id')
+            building_id = request_data.get('id')
 
             is_valid, not_valid_response = validator.validate_building_id(building_id)
             if not is_valid:

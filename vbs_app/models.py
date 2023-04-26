@@ -22,11 +22,24 @@ class Building(models.Model):
 
 
 class Venue(models.Model):
+    class VenueType(models.TextChoices):
+        CLASSROOM = 'CLASSROOM', _('Classroom')
+        LAB = 'LAB', _('Lab')
+        MEETING_ROOM = 'MEETING_ROOM', _('Meeting Room')
+        AUDITORIUM = 'AUDITORIUM', _('Auditorium')
+        OTHER = 'OTHER', _('Other')
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
 
     building_id = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True)
     floor_number = models.IntegerField()
+
+    venue_type = models.CharField(
+        max_length=50,
+        choices=VenueType.choices,
+        default=VenueType.OTHER,
+    )
 
     is_accessible = models.BooleanField()
 

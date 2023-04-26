@@ -12,7 +12,11 @@ def get_user_by_id(email):
 
 
 def get_all_users():
-    return User.objects.all()
+    return User.objects.all().order_by('name')
+
+
+def get_users_by_name(name):
+    return User.objects.filter(name__contains=name).order_by('name')
 
 
 def add_new_user(email, name, parent, require_parent_permission, is_admin, is_authority):
@@ -57,11 +61,11 @@ def get_building_by_id(building_id):
 
 
 def get_all_buildings():
-    return Building.objects.all()
+    return Building.objects.all().order_by('name')
 
 
 def get_buildings_by_name(name):
-    return Building.objects.filter(name__contains=name)
+    return Building.objects.filter(name__contains=name).order_by('name')
 
 
 def add_building(name):
@@ -90,11 +94,11 @@ def get_venue_by_id(venue_id):
 
 
 def get_venue_by_building(building_id):
-    return Venue.objects.filter(building_id=building_id)
+    return Venue.objects.filter(building_id=building_id).order_by('name')
 
 
 def get_venue_by_authority(authority_id):
-    return Venue.objects.filter(authority_id=authority_id)
+    return Venue.objects.filter(authority_id=authority_id).order_by('name')
 
 
 def get_venue_by_name(name):

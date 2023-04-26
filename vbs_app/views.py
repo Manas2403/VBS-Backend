@@ -25,6 +25,13 @@ def get_user_details(request, email):
 
 
 @api_view(['GET', 'POST'])
+def get_users_by_search(request):
+    return user_rh.UserRequestHandler().handle_request(request, user_rh.RequestTypes.GET_USERS_BY_SEARCH, {
+        'name': request.GET.get('name', '')
+    })
+
+
+@api_view(['GET', 'POST'])
 def add_new_user(request):
     return user_rh.UserRequestHandler().handle_request(request, user_rh.RequestTypes.ADD_NEW_USER)
 
@@ -47,7 +54,7 @@ def get_all_buildings(request):
 @api_view(['GET', 'POST'])
 def get_building_details(request, building_id):
     return building_rh.BuildingRequestHandler().handle_request(request, building_rh.RequestTypes.GET_BUILDING_DETAILS, {
-        'building_id': building_id
+        'id': building_id
     })
 
 
