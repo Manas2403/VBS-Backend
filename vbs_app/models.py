@@ -63,6 +63,12 @@ class Booking(models.Model):
         CANCELLED = 'CANCELLED', _('Cancelled')
         AUTOMATICALLY_DECLINED = 'AUTOMATICALLY_DECLINED', _('Automatically Declined')
 
+    class BookingType(models.TextChoices):
+        ACADEMIC = 'ACADEMIC', _('Academic')
+        WORKSHOP = 'WORKSHOP', _('Workshop')
+        EVENT = 'EVENT', _('Event')
+        OTHER = 'OTHER', _('Other')
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     venue_id = models.ForeignKey(Venue, on_delete=models.CASCADE)
@@ -77,8 +83,15 @@ class Booking(models.Model):
         default=BookingStatus.PENDING,
     )
 
+    booking_type = models.CharField(
+        max_length=50,
+        choices=BookingType.choices,
+        default=BookingType.OTHER
+    )
+
     event_duration = models.IntegerField()
     expected_strength = models.IntegerField()
+    title = models.TextField(default="")
     description = models.TextField()
 
 

@@ -35,6 +35,7 @@ class VenueSerializer(serializers.ModelSerializer):
             'name',
             'building_id',
             'floor_number',
+            'venue_type',
             'is_accessible',
             'seating_capacity',
             'has_air_conditioner',
@@ -59,8 +60,10 @@ class BookingSerializer(serializers.ModelSerializer):
             'event_time',
             'last_updated_time',
             'booking_status',
+            'booking_type',
             'event_duration',
             'expected_strength',
+            'title',
             'description',
         )
 
