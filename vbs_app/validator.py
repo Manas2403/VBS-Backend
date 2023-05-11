@@ -1,4 +1,4 @@
-from . import response_handler, utils, manager
+from . import response_handler, utils, manager, models
 
 
 def validate_building_id(building_id):
@@ -41,6 +41,14 @@ def validate_venue_id(venue_id):
     return True, None
 
 
+def validate_venue_type(venue_type):
+    if venue_type is None:
+        return False, response_handler.get_missing_parameters_response("venue_type")
+    if venue_type not in models.Venue.VenueType.names:
+        return False, response_handler.get_invalid_parameters_response("venue_type")
+    return True, None
+
+
 def validate_booking_id(booking_id):
     if booking_id is None:
         return False, response_handler.get_missing_parameters_response("booking_id")
@@ -48,6 +56,14 @@ def validate_booking_id(booking_id):
         return False, response_handler.get_invalid_parameters_response("booking_id")
     if not manager.check_booking_exists(booking_id):
         return False, response_handler.get_not_found_response("Booking")
+    return True, None
+
+
+def validate_booking_type(booking_type):
+    if booking_type is None:
+        return False, response_handler.get_missing_parameters_response("booking_type")
+    if booking_type not in models.Booking.BookingType.names:
+        return False, response_handler.get_invalid_parameters_response("booking_type")
     return True, None
 
 

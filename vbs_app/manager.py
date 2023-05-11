@@ -109,11 +109,12 @@ def get_all_venues():
     return Venue.objects.all()
 
 
-def add_venue(name, building_id, floor_number, is_accessible, seating_capacity, has_air_conditioner,
+def add_venue(name, building_id, floor_number, venue_type, is_accessible, seating_capacity, has_air_conditioner,
               has_projectors, has_speakers, has_whiteboard, authority_id):
     venue = Venue(
         name=name,
         building_id=get_building_by_id(building_id),
+        venue_type=venue_type,
         floor_number=floor_number,
         is_accessible=is_accessible,
         seating_capacity=seating_capacity,
@@ -127,7 +128,7 @@ def add_venue(name, building_id, floor_number, is_accessible, seating_capacity, 
     return venue
 
 
-def update_venue(venue, name, building_id, floor_number, is_accessible, seating_capacity, has_air_conditioner,
+def update_venue(venue, name, building_id, floor_number, venue_type, is_accessible, seating_capacity, has_air_conditioner,
                  has_projectors, has_speakers, has_whiteboard, authority_id):
     if name is not None:
         venue.name = name
@@ -135,6 +136,8 @@ def update_venue(venue, name, building_id, floor_number, is_accessible, seating_
         venue.building_id = building_id
     if floor_number is not None:
         venue.floor_number = floor_number
+    if venue_type is not None:
+        venue.venue_type = venue_type
     if is_accessible is not None:
         venue.is_accessible = is_accessible
     if seating_capacity is not None:
@@ -200,25 +203,31 @@ def get_all_bookings():
     return Booking.objects.all()
 
 
-def add_new_booking(user_id, venue_id, event_time, event_duration, expected_strength, description):
+def add_new_booking(user_id, venue_id, booking_type, event_time, event_duration, expected_strength, title, description):
     booking = Booking(
         user_id=get_user_by_id(user_id),
         venue_id=get_venue_by_id(venue_id),
+        booking_type=booking_type,
         booking_time=datetime.now(),
         event_time=event_time,
         last_updated_time=datetime.now(),
         event_duration=event_duration,
         expected_strength=expected_strength,
+        title=title,
         description=description
     )
     booking.save()
     return booking
 
 
-def update_booking(booking_id, expected_strength, description):
+def update_booking(booking_id, booking_type, expected_strength, title, description):
     booking = get_booking_by_id(booking_id)
+    if booking_type is not None:
+        booking.booking_type = booking_type
     if expected_strength is not None:
         booking.expected_strength = expected_strength
+    if title is not None:
+        booking.title = title
     if description is not None:
         booking.description = description
     booking.last_updated_time = datetime.now()

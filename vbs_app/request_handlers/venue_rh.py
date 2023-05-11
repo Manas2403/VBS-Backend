@@ -74,6 +74,7 @@ class VenueRequestHandler(RequestHandler):
             authority_id = request_data.get('authority_id')
             name = request_data.get("name")
             floor_number = request_data.get("floor_number")
+            venue_type = request_data.get("venue_type")
             is_accessible = request_data.get("is_accessible")
             seating_capacity = request_data.get("seating_capacity")
             has_air_conditioner = request_data.get("has_air_conditioner")
@@ -86,6 +87,10 @@ class VenueRequestHandler(RequestHandler):
                 return not_valid_response
 
             is_valid, not_valid_response = validator.validate_existing_user_email(authority_id)
+            if not is_valid:
+                return not_valid_response
+
+            is_valid, not_valid_response = validator.validate_venue_type(venue_type)
             if not is_valid:
                 return not_valid_response
 
@@ -123,7 +128,7 @@ class VenueRequestHandler(RequestHandler):
             if not isinstance(has_whiteboard, bool):
                 return response_handler.get_invalid_parameters_response("has_whiteboard")
 
-            venue = manager.add_venue(name, building_id, floor_number, is_accessible, seating_capacity,
+            venue = manager.add_venue(name, building_id, floor_number, venue_type, is_accessible, seating_capacity,
                                       has_air_conditioner, has_projectors, has_speakers, has_whiteboard, authority_id)
 
             serializer = serializers.VenueSerializer(venue, many=False)
@@ -135,6 +140,7 @@ class VenueRequestHandler(RequestHandler):
             authority_id = request_data.get("authority_id")
             name = request_data.get("name")
             floor_number = request_data.get("floor_number")
+            venue_type = request_data.get("venue_type")
             is_accessible = request_data.get("is_accessible")
             seating_capacity = request_data.get("seating_capacity")
             has_air_conditioner = request_data.get("has_air_conditioner")
@@ -165,6 +171,11 @@ class VenueRequestHandler(RequestHandler):
             if floor_number is not None:
                 if floor_number < 0 or not isinstance(floor_number, int):
                     return response_handler.get_invalid_parameters_response("floor_number")
+
+            if venue_type is not None:
+                is_valid, not_valid_response = validator.validate_venue_type(venue_type)
+                if not is_valid:
+                    return not_valid_response
 
             if is_accessible is not None:
                 if not isinstance(is_accessible, building_id):

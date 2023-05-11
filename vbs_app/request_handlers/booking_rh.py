@@ -110,9 +110,11 @@ class BookingRequestHandler(RequestHandler):
         if request_type == RequestType.ADD_NEW_BOOKING:
             user_id = request_data.get("user_id")
             venue_id = request_data.get("venue_id")
+            booking_type = request_data.get("booking_type")
             event_time = request_data.get("event_time")
             event_duration = request_data.get("event_duration")
             expected_strength = request_data.get("expected_strength")
+            title = request_data.get("title")
             description = request_data.get("description")
 
             is_valid, not_valid_response = validator.validate_existing_user_email(user_id)
@@ -120,6 +122,10 @@ class BookingRequestHandler(RequestHandler):
                 return not_valid_response
 
             is_valid, not_valid_response = validator.validate_venue_id(venue_id)
+            if not is_valid:
+                return not_valid_response
+
+            is_valid, not_valid_response = validator.validate_booking_type(booking_type)
             if not is_valid:
                 return not_valid_response
 
@@ -139,6 +145,11 @@ class BookingRequestHandler(RequestHandler):
             if expected_strength <= 0 or not isinstance(expected_strength, int):
                 return response_handler.get_invalid_parameters_response("expected_strength")
 
+            if title is None:
+                return response_handler.get_missing_parameters_response("title")
+            if title == "" or not isinstance(title, str):
+                return response_handler.get_invalid_parameters_response("title")
+
             if description is None:
                 return response_handler.get_missing_parameters_response("description")
             if description == "" or not isinstance(description, str):
@@ -147,8 +158,8 @@ class BookingRequestHandler(RequestHandler):
             if not utils.is_valid_time_and_duration(event_time, event_duration):
                 return response_handler.get_invalid_parameters_response("event_time, event_duration")
 
-            booking = manager.add_new_booking(user_id, venue_id, event_time, event_duration, expected_strength,
-                                              description)
+            booking = manager.add_new_booking(user_id, venue_id, booking_type, event_time, event_duration, expected_strength,
+                                              title, description)
 
             booking_helper.create_booking_requests(booking)
 
@@ -184,22 +195,33 @@ class BookingRequestHandler(RequestHandler):
 
         if request_type == RequestType.UPDATE_BOOKING:
             booking_id = request_data.get('booking_id')
+            booking_type = request_data.get("booking_type")
             expected_strength = request_data.get("expected_strength")
+            title = request_data.get("title")
             description = request_data.get("description")
 
             is_valid, not_valid_response = validator.validate_booking_id(booking_id)
             if not is_valid:
                 return not_valid_response
 
+            if booking_type is not None:
+                is_valid, not_valid_response = validator.validate_booking_type(booking_type)
+                if not is_valid:
+                    return not_valid_response
+
             if expected_strength is not None:
                 if expected_strength <= 0 or not isinstance(expected_strength, int):
                     return response_handler.get_invalid_parameters_response("expected_strength")
+
+            if title is not None:
+                if title == "" or not isinstance(title, str):
+                    return response_handler.get_invalid_parameters_response("title")
 
             if description is not None:
                 if description == "" or not isinstance(description, str):
                     return response_handler.get_invalid_parameters_response("description")
 
-            booking = manager.update_booking(booking_id, expected_strength, description)
+            booking = manager.update_booking(booking_id, booking_type, expected_strength, title, description)
             serializer = serializers.BookingSerializer(booking, many=False)
             return response_handler.get_success_response(serializer.data)
 
