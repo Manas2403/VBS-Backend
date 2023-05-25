@@ -1,6 +1,8 @@
 import uuid
 import re
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+import pytz
+import dateutil
 
 
 def is_valid_uuid(input_id):
@@ -23,10 +25,14 @@ def is_valid_email(email):
 
 def get_datetime_from_iso(iso_time):
     try:
-        event_time = datetime.fromisoformat(iso_time)
+        event_time = datetime.fromisoformat(str(iso_time))
         return True, event_time
     except ValueError:
-        return False, None
+        try:
+            event_time = datetime.fromisoformat(str(iso_time)[:-1])
+            return True, event_time
+        except ValueError:
+            return False, None
 
 
 def is_valid_time_and_duration(event_time, duration):
@@ -36,6 +42,11 @@ def is_valid_time_and_duration(event_time, duration):
 
 
 def is_time_overlapping(start_time_1, duration_1, start_time_2, duration_2):
+    utc = pytz.UTC
+
+    start_time_1 = start_time_1.replace(tzinfo=utc)
+    start_time_2 = start_time_2.replace(tzinfo=utc)
+
     end_time_1 = start_time_1 + timedelta(minutes=duration_1)
     end_time_2 = start_time_2 + timedelta(minutes=duration_2)
 

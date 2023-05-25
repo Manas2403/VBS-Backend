@@ -115,7 +115,7 @@ class VenueRequestHandler(RequestHandler):
                 return response_handler.get_invalid_parameters_response("name")
             if floor_number < 0 or not isinstance(floor_number, int):
                 return response_handler.get_invalid_parameters_response("floor_number")
-            if not isinstance(is_accessible, building_id):
+            if not isinstance(is_accessible, bool):
                 return response_handler.get_invalid_parameters_response("is_accessible")
             if seating_capacity <= 0 or not isinstance(seating_capacity, int):
                 return response_handler.get_invalid_parameters_response("seating_capacity")
@@ -135,7 +135,7 @@ class VenueRequestHandler(RequestHandler):
             return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.UPDATE_EXISTING_VENUE:
-            venue_id = request_data.get('venue_id')
+            venue_id = request_data.get('id')
             building_id = request_data.get("building_id")
             authority_id = request_data.get("authority_id")
             name = request_data.get("name")
@@ -178,7 +178,7 @@ class VenueRequestHandler(RequestHandler):
                     return not_valid_response
 
             if is_accessible is not None:
-                if not isinstance(is_accessible, building_id):
+                if not isinstance(is_accessible, bool):
                     return response_handler.get_invalid_parameters_response("is_accessible")
 
             if seating_capacity is not None:
@@ -201,7 +201,7 @@ class VenueRequestHandler(RequestHandler):
                 if not isinstance(has_whiteboard, bool):
                     return response_handler.get_invalid_parameters_response("has_whiteboard")
 
-            venue = manager.update_venue(venue, name, building_id, floor_number, is_accessible, seating_capacity,
+            venue = manager.update_venue(venue, name, building_id, floor_number, venue_type, is_accessible, seating_capacity,
                                          has_air_conditioner, has_projectors, has_speakers, has_whiteboard,
                                          authority_id)
 
@@ -209,7 +209,7 @@ class VenueRequestHandler(RequestHandler):
             return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.REMOVE_EXISTING_VENUE:
-            venue_id = request_data.get('venue_id')
+            venue_id = request_data.get('id')
 
             is_valid, not_valid_response = validator.validate_venue_id(venue_id)
             if not is_valid:

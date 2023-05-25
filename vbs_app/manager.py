@@ -133,7 +133,7 @@ def update_venue(venue, name, building_id, floor_number, venue_type, is_accessib
     if name is not None:
         venue.name = name
     if building_id is not None:
-        venue.building_id = building_id
+        venue.building_id = get_building_by_id(building_id)
     if floor_number is not None:
         venue.floor_number = floor_number
     if venue_type is not None:
@@ -151,7 +151,7 @@ def update_venue(venue, name, building_id, floor_number, venue_type, is_accessib
     if has_whiteboard is not None:
         venue.has_whiteboard = has_whiteboard
     if authority_id is not None:
-        venue.authority_id = authority_id
+        venue.authority_id = get_user_by_id(authority_id)
     venue.save()
     return venue
 
@@ -174,7 +174,7 @@ def get_booking_by_id(booking_id):
 
 
 def get_booking_by_user(user_id):
-    return Booking.objects.filter(user_id=user_id)
+    return Booking.objects.filter(user_id=user_id).order_by('booking_time')
 
 
 def get_booking_by_venue(venue_id):
