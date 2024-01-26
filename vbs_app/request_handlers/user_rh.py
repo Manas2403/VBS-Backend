@@ -45,16 +45,20 @@ class UserRequestHandler(RequestHandler):
 
         return response_handler.get_bad_request_response()
 
-    def _handle_post_request(self, request_type, request_data):
-        if request_type == RequestTypes.LOGIN_USER_USING_CREDENTIALS:
-            credential = request_data.get('credential')
-            is_verified, email = google_token_handler.verify_oauth_token(credential)
-
+    def _handle_post_request(self, request_type, request_data, headers):
+        if request_type == RequestTypes.LOGIN_USER_USING_CREDENTIALS:        
+            credential = headers.get('Authorization')
+            user_data = request_data
+            is_verified, email = google_token_handler.verify_id_token(credential)
+            print(is_verified, email)
+            if user_data is None:
+                return response_handler.get_missing_parameters_response("user_data")
             if not is_verified:
-                return response_handler.get_invalid_parameters_response("credential")
-
+                return response_handler.get_invalid_parameters_response("credential") 
             if not manager.check_user_exists(email):
-                return response_handler.get_not_found_response("User")
+                user=manager.add_new_user(email, user_data['name'], None, False, False, False)
+                serializer = serializers.UserSerializer(user)
+                return response_handler.get_success_response(serializer.data) 
 
             user = manager.get_user_by_id(email)
             serializer = serializers.UserSerializer(user)

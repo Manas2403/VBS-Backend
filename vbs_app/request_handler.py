@@ -24,8 +24,7 @@ class RequestHandler:
         request_data = JSONParser().parse(request)
         if request_data is None:
             return response_handler.get_bad_request_response()
-
-        return self._handle_post_request(request_type, request_data)
+        return self._handle_post_request(request_type, request_data, request.headers)
 
     def _handle_get_request(self, request_type, request_params):
         return response_handler.get_bad_request_response()

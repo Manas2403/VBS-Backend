@@ -3,7 +3,6 @@ db.sqlite3
 
 vbs_backend/__init__.py
 
-vbs_app/migrations
 vbs_app/request_handlers/__init__.py
 
 mEnv
