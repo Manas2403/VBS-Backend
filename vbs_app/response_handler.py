@@ -15,6 +15,8 @@ def get_invalid_token_response():
 def get_missing_parameters_response(parameter_name):
     return get_error_response(status.HTTP_400_BAD_REQUEST, f"Required Parameter ({parameter_name}) not found")
 
+def get_out_of_college_email_response(parameter_name):
+    return get_error_response(status.HTTP_400_BAD_REQUEST, f"Email provided ({parameter_name}) is not a college email")
 
 def get_invalid_parameters_response(parameter_name):
     return get_error_response(status.HTTP_400_BAD_REQUEST, f"Parameter provided ({parameter_name}) is invalid")
