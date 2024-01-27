@@ -59,7 +59,7 @@ class UserRequestHandler(RequestHandler):
             if not is_verified:
                 return response_handler.get_invalid_parameters_response("credential") 
             if not manager.check_user_exists(email):
-                user=manager.add_new_user(email, user_data['name'], None, False, False, False)
+                user=manager.add_new_user(email, user_data['name'],user_data['profile_picture'], None, False, False, False)
                 serializer = serializers.UserSerializer(user)
                 return response_handler.get_success_response(serializer.data) 
 
@@ -70,6 +70,7 @@ class UserRequestHandler(RequestHandler):
         if request_type == RequestTypes.ADD_NEW_USER:
             email = request_data.get('email')
             name = request_data.get('name')
+            profile_picture = request_data.get('profile_picture')
             parent = request_data.get('parent')
             require_parent_permission = request_data.get('require_parent_permission')
             is_admin = request_data.get('is_admin')
@@ -103,13 +104,14 @@ class UserRequestHandler(RequestHandler):
             if not isinstance(is_authority, bool):
                 return response_handler.get_invalid_parameters_response("is_authority")
 
-            user = manager.add_new_user(email, name, parent, require_parent_permission, is_admin, is_authority)
+            user = manager.add_new_user(email, name,profile_picture, parent, require_parent_permission, is_admin, is_authority)
             serializer = serializers.UserSerializer(user, many=False)
             return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestTypes.UPDATE_EXISTING_USER:
             email = request_data.get('email')
             name = request_data.get('name')
+            profile_picture = request_data.get('profile_picture')
             parent = request_data.get('parent')
             require_parent_permission = request_data.get('require_parent_permission')
             is_admin = request_data.get('is_admin')
@@ -129,6 +131,10 @@ class UserRequestHandler(RequestHandler):
             if name is not None:
                 if name == "" or not isinstance(name, str):
                     return response_handler.get_invalid_parameters_response("name")
+            
+            if profile_picture is not None:
+                if profile_picture == "" or not isinstance(profile_picture, str):
+                    return response_handler.get_invalid_parameters_response("profile_picture")
 
             if require_parent_permission is not None:
                 if not isinstance(require_parent_permission, bool):
@@ -142,7 +148,7 @@ class UserRequestHandler(RequestHandler):
                 if not isinstance(is_authority, bool):
                     return response_handler.get_invalid_parameters_response("is_authority")
 
-            user = manager.update_user(user, name, parent, require_parent_permission, is_admin, is_authority)
+            user = manager.update_user(user, name,profile_picture, parent, require_parent_permission, is_admin, is_authority)
 
             serializer = serializers.UserSerializer(user, many=False)
             return response_handler.get_success_response(serializer.data)

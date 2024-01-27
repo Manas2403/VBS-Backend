@@ -5,7 +5,7 @@ from . import response_handler, google_token_handler
 class RequestHandler:
 
     def handle_request(self, request, request_type, request_params=None):
-        auth_token = request.headers.get('Auth-Token')
+        auth_token = request.headers.get('Authorization')
         is_verified, email = google_token_handler.verify_id_token(auth_token)
 
         if not is_verified:
