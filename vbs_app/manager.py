@@ -19,11 +19,10 @@ def get_users_by_name(name):
     return User.objects.filter(name__contains=name).order_by('name')
 
 
-def add_new_user(email, name,profile_picture, parent, require_parent_permission, is_admin, is_authority):
+def add_new_user(email, name, parent, require_parent_permission, is_admin, is_authority):
     user = User(
         email=email,
         name=name,
-        profile_picture=profile_picture,
         parent=parent,
         require_parent_permission=require_parent_permission,
         is_admin=is_admin,

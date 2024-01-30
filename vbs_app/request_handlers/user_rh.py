@@ -59,7 +59,7 @@ class UserRequestHandler(RequestHandler):
             if not is_verified:
                 return response_handler.get_invalid_parameters_response("credential") 
             if not manager.check_user_exists(email):
-                user=manager.add_new_user(email, user_data['name'],user_data['profile_picture'], None, False, False, False)
+                user=manager.add_new_user(email, user_data['name'], None, False, False, False)
                 serializer = serializers.UserSerializer(user)
                 return response_handler.get_success_response(serializer.data) 
 
