@@ -46,6 +46,7 @@ class BuildingRequestHandler(RequestHandler):
 
     def _handle_post_request(self, request_type, request_data):
         if request_type == RequestTypes.ADD_NEW_BUILDING:
+            # print(request_data)
             name = request_data.get("name")
 
             if name is None:
