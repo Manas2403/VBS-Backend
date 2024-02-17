@@ -8,7 +8,7 @@ class User(models.Model):
     email = models.EmailField(max_length=200, primary_key=True)
     name = models.CharField(max_length=50)
     # profile_picture = models.URLField(max_length=200, null=True)
-    parent = models.CharField(max_length=100, null=True)
+    parent = models.EmailField(max_length=200, null=True)
     require_parent_permission = models.BooleanField(default=False)
     is_admin = models.BooleanField()
     is_authority = models.BooleanField()

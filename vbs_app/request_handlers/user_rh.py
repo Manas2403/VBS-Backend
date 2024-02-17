@@ -50,10 +50,6 @@ class UserRequestHandler(RequestHandler):
             credential = headers.get('Authorization')
             user_data = request_data
             is_verified, email = google_token_handler.verify_id_token(credential)
-            print(is_verified, email)
-            username,domain = email.split('@')
-            if domain !='iiita.ac.in':
-                return response_handler.get_out_of_college_email_response(email)
             if user_data is None:
                 return response_handler.get_missing_parameters_response("user_data")
             if not is_verified:
