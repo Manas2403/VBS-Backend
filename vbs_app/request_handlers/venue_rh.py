@@ -34,7 +34,6 @@ class VenueRequestHandler(RequestHandler):
 
         if request_type == RequestTypes.GET_VENUES_BY_AUTHORITY:
             authority_id = request_params.get('authority_id')
-
             is_authority_valid, not_valid_response = validator.validate_existing_user_email(authority_id)
             if not is_authority_valid:
                 return not_valid_response

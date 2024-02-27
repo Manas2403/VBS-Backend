@@ -55,7 +55,8 @@ class UserRequestHandler(RequestHandler):
             if not is_verified:
                 return response_handler.get_invalid_parameters_response("credential") 
             if not manager.check_user_exists(email):
-                user=manager.add_new_user(email, user_data['name'], None, False, False, False)
+                # default mail is iit2021146@iiita.ac.in
+                user=manager.add_new_user(email, user_data['name'],'iit2021146@iiita.ac.in', False, False, False)
                 serializer = serializers.UserSerializer(user)
                 return response_handler.get_success_response(serializer.data) 
 
