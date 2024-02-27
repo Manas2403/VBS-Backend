@@ -68,7 +68,7 @@ class VenueRequestHandler(RequestHandler):
 
         return response_handler.get_bad_request_response()
 
-    def _handle_post_request(self, request_type, request_data):
+    def _handle_post_request(self, request_type, request_data,headers):
         if request_type == RequestTypes.ADD_NEW_VENUE:
             building_id = request_data.get('building_id')
             authority_id = request_data.get('authority_id')

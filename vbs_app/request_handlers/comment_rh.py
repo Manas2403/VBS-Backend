@@ -47,7 +47,7 @@ class CommentsRequestHandler(RequestHandler):
 
         return response_handler.get_bad_request_response()
 
-    def _handle_post_request(self, request_type, request_data):
+    def _handle_post_request(self, request_type, request_data,headers):
         if request_type == RequestType.ADD_NEW_COMMENT:
             user_id = request_data.get("user_id")
             booking_id = request_data.get("booking_id")

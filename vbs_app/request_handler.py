@@ -18,7 +18,7 @@ class RequestHandler:
             request_data = JSONParser().parse(request)
             if request_data is None:
                 return response_handler.get_bad_request_response()
-            return self._handle_post_request(request_type, request_data)
+            return self._handle_post_request(request_type, request_data,request.headers)
 
     def handle_login_request(self, request, request_type):
         request_data = JSONParser().parse(request)
