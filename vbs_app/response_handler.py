@@ -46,3 +46,6 @@ def get_success_response(response_data):
 
     serializer = response.ResponseSerializer(success_response)
     return Response(serializer.data, status=status.HTTP_200_OK)
+
+def get_internal_server_error_response(message="Internal Server Error"):
+    return get_error_response(status.HTTP_500_INTERNAL_SERVER_ERROR, message)

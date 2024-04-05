@@ -68,8 +68,8 @@ def get_buildings_by_name(name):
     return Building.objects.filter(name__contains=name).order_by('name')
 
 
-def add_building(name):
-    building = Building(name=name)
+def add_building(name,image_url):
+    building = Building(name=name,building_picture=image_url)
     building.save()
     return building
 
@@ -82,6 +82,7 @@ def update_building(building, name):
 
 def delete_building(building_id):
     building = get_building_by_id(building_id)
+    Venue.objects.filter(building_id=building_id).delete()
     building.delete()
 
 

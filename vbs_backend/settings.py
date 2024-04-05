@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,6 +35,21 @@ CORS_ORIGIN_ALLOW_ALL = True
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 
+          
+cloudinary.config( 
+  cloud_name = "dprpaoydt", 
+  api_key = "664932781227496", 
+  api_secret = "Q8vbGA4W3wk74RdrjCQo5ExYrFs" 
+)
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'vbs.iiita@gmail.com' 
+EMAIL_HOST_PASSWORD = 'vbs@iiita.ac.in'  
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,9 +62,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sessions', 
     'vbs_app',
-     
-   
-    
 ]
 
 MIDDLEWARE = [

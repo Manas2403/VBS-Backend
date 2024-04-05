@@ -17,7 +17,7 @@ class User(models.Model):
 class Building(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=40)
-
+    building_picture=models.URLField(blank=True,null=True)
     def __str__(self):
         return self.name
 

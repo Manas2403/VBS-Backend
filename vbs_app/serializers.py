@@ -21,6 +21,7 @@ class BuildingSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
+            'building_picture',
         )
 
 
