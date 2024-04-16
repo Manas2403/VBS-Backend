@@ -55,7 +55,8 @@ class UserRequestHandler(RequestHandler):
             if not is_verified:
                 return response_handler.get_invalid_parameters_response("credential") 
             if not manager.check_user_exists(email):
-                user=manager.add_new_user(email, user_data['name'], None, False, False, False)
+                # default mail is iit2021146@iiita.ac.in
+                user=manager.add_new_user(email, user_data['name'],'iit2021146@iiita.ac.in', False, False, False)
                 serializer = serializers.UserSerializer(user)
                 return response_handler.get_success_response(serializer.data) 
 
@@ -100,7 +101,7 @@ class UserRequestHandler(RequestHandler):
             if not isinstance(is_authority, bool):
                 return response_handler.get_invalid_parameters_response("is_authority")
 
-            user = manager.add_new_user(email, name,profile_picture, parent, require_parent_permission, is_admin, is_authority)
+            user = manager.add_new_user(email, name, parent, require_parent_permission, is_admin, is_authority)
             serializer = serializers.UserSerializer(user, many=False)
             return response_handler.get_success_response(serializer.data)
 
@@ -144,7 +145,7 @@ class UserRequestHandler(RequestHandler):
                 if not isinstance(is_authority, bool):
                     return response_handler.get_invalid_parameters_response("is_authority")
 
-            user = manager.update_user(user, name,profile_picture, parent, require_parent_permission, is_admin, is_authority)
+            user = manager.update_user(user, name, parent, require_parent_permission, is_admin, is_authority)
 
             serializer = serializers.UserSerializer(user, many=False)
             return response_handler.get_success_response(serializer.data)

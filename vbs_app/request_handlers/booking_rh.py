@@ -106,7 +106,7 @@ class BookingRequestHandler(RequestHandler):
 
         return response_handler.get_bad_request_response()
 
-    def _handle_post_request(self, request_type, request_data):
+    def _handle_post_request(self, request_type, request_data,headers):
         if request_type == RequestType.ADD_NEW_BOOKING:
             user_id = request_data.get("user_id")
             venue_id = request_data.get("venue_id")

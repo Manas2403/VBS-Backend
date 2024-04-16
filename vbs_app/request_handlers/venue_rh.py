@@ -34,7 +34,6 @@ class VenueRequestHandler(RequestHandler):
 
         if request_type == RequestTypes.GET_VENUES_BY_AUTHORITY:
             authority_id = request_params.get('authority_id')
-
             is_authority_valid, not_valid_response = validator.validate_existing_user_email(authority_id)
             if not is_authority_valid:
                 return not_valid_response
@@ -68,7 +67,7 @@ class VenueRequestHandler(RequestHandler):
 
         return response_handler.get_bad_request_response()
 
-    def _handle_post_request(self, request_type, request_data):
+    def _handle_post_request(self, request_type, request_data,headers):
         if request_type == RequestTypes.ADD_NEW_VENUE:
             building_id = request_data.get('building_id')
             authority_id = request_data.get('authority_id')

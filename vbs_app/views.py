@@ -65,9 +65,9 @@ def get_building_by_search(request):
     })
 
 
-@api_view(['GET', 'POST'])
-def add_new_building(request):
-    return building_rh.BuildingRequestHandler().handle_request(request, building_rh.RequestTypes.ADD_NEW_BUILDING)
+# @api_view(['GET', 'POST'])
+# def add_new_building(request):
+#     return building_rh.BuildingRequestHandler().handle_request(request, building_rh.RequestTypes.ADD_NEW_BUILDING)
 
 
 @api_view(['GET', 'POST'])

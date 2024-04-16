@@ -1,4 +1,6 @@
 from django.urls import path
+
+from vbs_app.request_handlers.building_rh import AddNewBuildingAPIView, UpdateNewBuildingAPIView
 from . import views
 
 urlpatterns = [
@@ -13,8 +15,8 @@ urlpatterns = [
     path('buildings/details/all/', views.get_all_buildings),
     path('buildings/details/<str:building_id>/', views.get_building_details),
     path('buildings/search/', views.get_building_by_search),
-    path('buildings/add/', views.add_new_building),
-    path('buildings/update/', views.update_existing_building),
+    path('buildings/add/', AddNewBuildingAPIView.as_view(),  name='add-buildings'),
+    path('buildings/update/', UpdateNewBuildingAPIView.as_view(),name='update-buildings'),
     path('buildings/remove/', views.remove_existing_building),
 
     path('venues/details/all/', views.get_all_venues),
