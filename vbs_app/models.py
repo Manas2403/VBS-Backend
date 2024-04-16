@@ -12,7 +12,7 @@ class User(models.Model):
     require_parent_permission = models.BooleanField(default=False)
     is_admin = models.BooleanField()
     is_authority = models.BooleanField()
-
+    
 
 class Building(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
