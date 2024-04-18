@@ -239,7 +239,7 @@ class BookingRequestHandler(RequestHandler):
         if request_type == RequestType.UPDATE_BOOKING_REQUEST:
             booking_request_id = request_data.get("id")
             request_status = request_data.get("request_status")
-
+            
             is_valid, not_valid_response = validator.validate_booking_request_id(booking_request_id)
             if not is_valid:
                 return not_valid_response
