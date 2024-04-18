@@ -191,7 +191,8 @@ class BookingRequestHandler(RequestHandler):
 
             booking = booking_helper.update_booking_time(booking_id, event_time, event_duration)
             serializer = serializers.BookingSerializer(booking, many=False)
-            return response_handler.get_success_response(serializer)
+            serialized_data=serializer.data
+            return response_handler.get_success_response(serializer_data)
 
         if request_type == RequestType.UPDATE_BOOKING:
             booking_id = request_data.get('booking_id')
