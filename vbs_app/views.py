@@ -217,11 +217,11 @@ def get_comments_by_booking(request, booking_id):
     })
 
 
-@api_view(['GET', 'POST'])
-def get_comment(request, comment_id):
-    return comment_rh.CommentsRequestHandler().handle_request(request, comment_rh.RequestType.GET_COMMENT, {
-        'comment_id': comment_id
-    })
+# @api_view(['GET', 'POST'])
+# def get_comment(request, comment_id):
+#     return comment_rh.CommentsRequestHandler().handle_request(request, comment_rh.RequestType.GET_COMMENT, {
+#         'comment_id': comment_id
+#     })
 
 
 @api_view(['GET', 'POST'])

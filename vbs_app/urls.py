@@ -43,6 +43,6 @@ urlpatterns = [
 
     path('comments/byUser/<str:user_id>/', views.get_comments_by_user),
     path('comments/byBooking/<str:booking_id>/', views.get_comments_by_booking),
-    path('comments/<str:comment_id>/', views.get_comment),
+    # path('comments/<str:comment_id>/', views.get_comment),
     path('comments/add/', views.add_new_comment),
 ]
