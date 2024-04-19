@@ -1,4 +1,4 @@
-from .. import serializers, utils, manager, validator, response_handler, booking_helper
+from .. import serializers, utils, manager, validator, response_handler, booking_helper,email_rh
 from ..request_handler import RequestHandler
 from enum import Enum
 
@@ -29,6 +29,7 @@ class BookingRequestHandler(RequestHandler):
 
             bookings = manager.get_booking_by_user(user_id)
             serializer = serializers.BookingSerializer(bookings, many=True)
+            email_rh.send_email_view(self,user_id)
             return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestType.GET_BOOKINGS_BY_VENUE:

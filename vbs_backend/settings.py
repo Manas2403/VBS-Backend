@@ -48,7 +48,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'vbs.iiita@gmail.com' 
-EMAIL_HOST_PASSWORD = 'vbs@iiita.ac.in'  
+EMAIL_HOST_PASSWORD = 'tfyyitfydmtwbuhx'  
 
 # Application definition
 
@@ -76,10 +76,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'vbs_backend.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+                os.path.join(BASE_DIR, 'vbs_app', 'templates'),  # Templates directory for the 'vbs_app' app
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

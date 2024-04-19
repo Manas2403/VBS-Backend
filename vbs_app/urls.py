@@ -45,4 +45,5 @@ urlpatterns = [
     path('comments/byBooking/<str:booking_id>/', views.get_comments_by_booking),
     # path('comments/<str:comment_id>/', views.get_comment),
     path('comments/add/', views.add_new_comment),
+    
 ]
