@@ -1,3 +1,4 @@
+from flask import request
 from .. import serializers, manager, response_handler, validator
 from ..request_handler import RequestHandler
 from enum import Enum
@@ -6,8 +7,8 @@ from enum import Enum
 class RequestType(Enum):
     GET_COMMENTS_BY_USER = 0
     GET_COMMENTS_BY_BOOKING = 1
-    GET_COMMENT = 2
-    ADD_NEW_COMMENT = 3
+    # GET_COMMENT = 2
+    ADD_NEW_COMMENT = 2
 
 
 class CommentsRequestHandler(RequestHandler):
@@ -34,18 +35,18 @@ class CommentsRequestHandler(RequestHandler):
             serializer = serializers.CommentsSerializer(comments, many=True)
             return response_handler.get_success_response(serializer.data)
 
-        if request_type == RequestType.GET_COMMENT:
-            comment_id = request_params.get("comment_id")
+        # if request_type == RequestType.GET_COMMENT:
+        #     comment_id = request_params.get("comment_id")
 
-            is_valid, not_valid_response = validator.validate_comment_id(comment_id)
-            if not is_valid:
-                return not_valid_response
+        #     is_valid, not_valid_response = validator.validate_comment_id(comment_id)
+        #     if not is_valid:
+        #         return not_valid_response
 
-            comment = manager.get_comment_by_id(comment_id)
-            serializer = serializers.CommentsSerializer(comment, many=False)
-            return response_handler.get_success_response(serializer.data)
+        #     comment = manager.get_comment_by_id(comment_id)
+        #     serializer = serializers.CommentsSerializer(comment, many=False)
+        #     return response_handler.get_success_response(serializer.data)
 
-        return response_handler.get_bad_request_response()
+        # return response_handler.get_bad_request_response()
 
     def _handle_post_request(self, request_type, request_data,headers):
         if request_type == RequestType.ADD_NEW_COMMENT:
