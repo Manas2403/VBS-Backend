@@ -52,7 +52,7 @@ class CommentsRequestHandler(RequestHandler):
             user_id = request_data.get("user_id")
             booking_id = request_data.get("booking_id")
             comment_content = request_data.get("comment_content")
-
+            print(user_id,booking_id,comment_content)
             is_valid, not_valid_response = validator.validate_existing_user_email(user_id)
             if not is_valid:
                 return not_valid_response
