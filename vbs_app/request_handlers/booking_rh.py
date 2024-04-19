@@ -1,3 +1,6 @@
+import email
+
+from flask import request
 from .. import serializers, utils, manager, validator, response_handler, booking_helper,email_rh
 from ..request_handler import RequestHandler
 from enum import Enum
@@ -29,7 +32,6 @@ class BookingRequestHandler(RequestHandler):
 
             bookings = manager.get_booking_by_user(user_id)
             serializer = serializers.BookingSerializer(bookings, many=True)
-            email_rh.send_email_view(self,user_id)
             return response_handler.get_success_response(serializer.data)
 
         if request_type == RequestType.GET_BOOKINGS_BY_VENUE:
@@ -163,7 +165,9 @@ class BookingRequestHandler(RequestHandler):
                                               title, description)
 
             booking_helper.create_booking_requests(booking)
-
+            email_rh.send_email_view(self,user_id,"Your booking has been successfully created! You will receive an email update when there are changes to your booking status.")
+            authority_id=manager.get_authority_by_venue(venue_id)
+            email_rh.send_email_view(self,authority_id.email,"A new booking request has been generated. Please visit the website to update the status of the request.")
             serializer = serializers.BookingSerializer(booking, many=False)
             return response_handler.get_success_response(serializer.data)
 
@@ -254,7 +258,8 @@ class BookingRequestHandler(RequestHandler):
             booking_request = manager.get_booking_request_by_id(booking_request_id)
             manager.update_booking_request(booking_request, request_status)
             booking_helper.update_booking_requests(booking_request.booking_id)
-
+            booking=manager.get_booking_by_id(booking_request.booking_id.id)
+            email_rh.send_email_view(self,booking.user_id.email,"Your booking request has been {}".format(request_status))
             serializer = serializers.BookingRequestSerializer(booking_request, many=False)
             return response_handler.get_success_response(serializer.data)
 

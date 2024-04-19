@@ -6,14 +6,14 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 def send_email_view(request,userEmail,message):
-    username = "John"  # Example username
+    username = userEmail  # Example username
     context = {
+               'username':username,
                'message':message
                }
     email_html_message = render_to_string('booking_request.html', context)
-    print(userEmail)
     send_mail(
-        'Subject here',
+        'Venue Booker',
         'Here is the message.',
         settings.EMAIL_HOST_USER,
         [userEmail],

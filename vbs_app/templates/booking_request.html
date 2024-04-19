@@ -1,37 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Template</title>
-    <style>
-        /* Your CSS styles */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Hello {{ username }}</h1>
-        <p>This is an example email template with CSS styling.</p>
-    </div>
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Email Template</title>
+        <style>
+            /* Your CSS styles */
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 600px;
+                margin: 20px auto;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                border: 2px solid #ccc; /* Add a border */
+            }
+            h1 {
+                color: #333;
+            }
+            p {
+                color: #666;
+            }
+            .custom-message {
+                font-style: italic;
+            }
+            .link {
+                color: #007bff; /* Blue color for link */
+                text-decoration: none;
+                font-weight: bold;
+            }
+            .link:hover {
+                text-decoration: underline; /* Underline on hover */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Hello {{ username }}</h1>
+            <p class="custom-message">{{ message }}</p>
+            <p>
+                Visit website:
+                <a href="" class="link">Venue Booker</a>
+            </p>
+        </div>
+    </body>
 </html>
