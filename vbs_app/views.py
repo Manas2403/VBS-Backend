@@ -5,7 +5,8 @@ from .request_handlers import building_rh
 from .request_handlers import venue_rh
 from .request_handlers import booking_rh
 from .request_handlers import comment_rh
-
+from .request_handlers import vh_venue_rh
+from .request_handlers import vh_booking_rh
 
 @api_view(['GET', 'POST'])
 def login_using_credentials(request):
@@ -227,3 +228,100 @@ def get_comments_by_booking(request, booking_id):
 @api_view(['GET', 'POST'])
 def add_new_comment(request):
     return comment_rh.CommentsRequestHandler().handle_request(request, comment_rh.RequestType.ADD_NEW_COMMENT)
+
+@api_view(['GET', 'POST'])
+def get_all_vh_venues(request):
+    return vh_venue_rh.VHVenueRequestHandler().handle_request(request, vh_venue_rh.RequestTypes.GET_ALL_VH_VENUES)
+
+
+@api_view(['GET', 'POST'])
+def get_vh_venues_by_building(request, building_id):
+    return vh_venue_rh. VHVenueRequestHandler().handle_request(request, vh_venue_rh.RequestTypes.GET_VH_VENUES_BY_BUILDING, {
+        'building_id': building_id
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_venues_by_authority(request, authority_id):
+    return vh_venue_rh.VHVenueRequestHandler().handle_request(request, vh_venue_rh.RequestTypes.GET_VH_VENUES_BY_AUTHORITY, {
+        'authority_id': authority_id
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_venues_by_search(request):
+    return vh_venue_rh.VHVenueRequestHandler().handle_request(request, vh_venue_rh.RequestTypes.GET_VH_VENUES_BY_SEARCH, {
+        'name': request.GET.get('name', '')
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_venue_details(request, venue_id):
+    return vh_venue_rh.VHVenueRequestHandler().handle_request(request, vh_venue_rh.RequestTypes.GET_VH_VENUE_DETAILS, {
+        'venue_id': venue_id
+    })
+
+
+@api_view(['GET', 'POST'])
+def add_new_vh_venue(request):
+    return vh_venue_rh.VHVenueRequestHandler().handle_request(request, vh_venue_rh.RequestTypes.ADD_NEW_VH_VENUE)
+
+
+@api_view(['GET', 'POST'])
+def update_existing_vh_venue(request):
+    return vh_venue_rh. VHVenueRequestHandler().handle_request(request, vh_venue_rh.RequestTypes.UPDATE_EXISTING_VH_VENUE)
+
+
+@api_view(['GET', 'POST'])
+def remove_existing_vh_venue(request):
+    return vh_venue_rh.VHVenueRequestHandler().handle_request(request, vh_venue_rh.RequestTypes.REMOVE_EXISTING_VH_VENUE)
+
+@api_view(['GET', 'POST'])
+def get_vh_bookings_by_user(request, user_id):
+    return vh_booking_rh.VHBookingRequestHandler().handle_request(request, vh_booking_rh.RequestType.GET_VH_BOOKINGS_BY_USER, {
+        'user_id': user_id
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_bookings_by_venue(request, venue_id):
+    return vh_booking_rh.VHBookingRequestHandler().handle_request(request, vh_booking_rh.RequestType.GET_VH_BOOKINGS_BY_VENUE, {
+        'venue_id': venue_id
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_booking_details(request, booking_id):
+    return vh_booking_rh.VHBookingRequestHandler().handle_request(request, vh_booking_rh.RequestType.GET_VH_BOOKING_DETAILS, {
+        'booking_id': booking_id
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_venue_bookings_by_day(request, venue_id):
+    return vh_booking_rh.VHBookingRequestHandler().handle_request(request, vh_booking_rh.RequestType.GET_VH_VENUE_BOOKINGS_BY_DAY, {
+        'venue_id': venue_id,
+        'query_time': request.GET.get('query_time', '')
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_booking_requests_by_booking(request, booking_id):
+    return vh_booking_rh.VHBookingRequestHandler().handle_request(request, vh_booking_rh.RequestType.GET_VH_BOOKING_REQUESTS_BY_BOOKING, {
+        'booking_id': booking_id
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_booking_requests_by_receiver(request, receiver_id):
+    return vh_booking_rh.VHBookingRequestHandler().handle_request(request, vh_booking_rh.RequestType.GET_VH_BOOKING_REQUESTS_BY_RECEIVER, {
+        'receiver_id': receiver_id
+    })
+
+
+@api_view(['GET', 'POST'])
+def get_vh_booking_request(request, booking_request_id):
+    return vh_booking_rh.VHBookingRequestHandler().handle_request(request, vh_booking_rh.RequestType.GET_VH_BOOKING_REQUEST, {
+        'booking_request_id': booking_request_id
+    })
+

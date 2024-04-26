@@ -46,4 +46,21 @@ urlpatterns = [
     # path('comments/<str:comment_id>/', views.get_comment),
     path('comments/add/', views.add_new_comment),
     
+    path('vhvenues/details/all/', views.get_all_vh_venues),
+    path('vhvenues/details/byBuilding/<str:building_id>/', views.get_vh_venues_by_building),
+    path('vhvenues/details/byAuthority/<str:authority_id>/', views.get_vh_venues_by_authority),
+    path('vhvenues/details/<str:venue_id>/', views.get_vh_venue_details),
+    path('vhvenues/search/', views.get_vh_venues_by_search),
+    path('vhvenues/add/', views.add_new_vh_venue),
+    path('vhvenues/update/', views.update_existing_vh_venue),
+    path('vhvenues/remove/', views.remove_existing_vh_venue),
+    
+    path('vhbookings/details/byUser/<str:user_id>/', views.get_vh_bookings_by_user),
+    path('vhbookings/details/byVenue/<str:venue_id>/', views.get_vh_bookings_by_venue),
+    path('vhbookings/details/byVenue/<str:venue_id>/byDay/', views.get_vh_venue_bookings_by_day),
+    path('vhbookings/details/<str:booking_id>/', views.get_vh_booking_details),
+    path('vhbookings/bookingRequests/byBooking/<str:booking_id>/', views.get_vh_booking_requests_by_booking),
+    path('vhbookings/bookingRequests/byReceiver/<str:receiver_id>/', views.get_vh_booking_requests_by_receiver),
+    path('vhbookings/bookingRequests/details/<str:booking_request_id>/', views.get_vh_booking_request),
+    
 ]

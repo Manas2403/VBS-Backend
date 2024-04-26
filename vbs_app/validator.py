@@ -40,6 +40,14 @@ def validate_venue_id(venue_id):
         return False, response_handler.get_not_found_response("Venue")
     return True, None
 
+def validate_vh_venue_id(vh_venue_id):
+    if vh_venue_id is None:
+        return False, response_handler.get_missing_parameters_response("vh_venue_id")
+    if not utils.is_valid_uuid(vh_venue_id):
+        return False, response_handler.get_invalid_parameters_response("vh_venue_id")
+    if not manager.check_vh_venue_exists(vh_venue_id):
+        return False, response_handler.get_not_found_response("Venue")
+    return True, None
 
 def validate_venue_type(venue_type):
     if venue_type is None:
@@ -58,6 +66,14 @@ def validate_booking_id(booking_id):
         return False, response_handler.get_not_found_response("Booking")
     return True, None
 
+def validate_vh_booking_id(booking_id):
+    if booking_id is None:
+        return False, response_handler.get_missing_parameters_response("booking_id")
+    if not utils.is_valid_uuid(booking_id):
+        return False, response_handler.get_invalid_parameters_response("booking_id")
+    if not manager.check_vh_booking_exists(booking_id):
+        return False, response_handler.get_not_found_response("Booking")
+    return True, None
 
 def validate_booking_type(booking_type):
     if booking_type is None:
@@ -76,6 +92,14 @@ def validate_booking_request_id(booking_request_id):
         return False, response_handler.get_not_found_response("Booking Request")
     return True, None
 
+def validate_vh_booking_request_id(booking_request_id):
+    if booking_request_id is None:
+        return False, response_handler.get_missing_parameters_response("booking_request_id")
+    if not utils.is_valid_uuid(booking_request_id):
+        return False, response_handler.get_invalid_parameters_response("booking_request_id")
+    if not manager.check_vh_booking_request_exists(booking_request_id):
+        return False, response_handler.get_not_found_response("Booking Request")
+    return True, None
 
 def validate_comment_id(comment_id):
     if comment_id is None:
@@ -84,4 +108,11 @@ def validate_comment_id(comment_id):
         return False, response_handler.get_invalid_parameters_response("comment_id")
     if not manager.check_comment_exists(comment_id):
         return False, response_handler.get_not_found_response("Comment")
+    return True, None
+
+def validate_accomodation_type(accomodation_type):
+    if accomodation_type is None:
+        return False, response_handler.get_missing_parameters_response("accomodation_type")
+    if accomodation_type not in models.VHVenue.AccomodationType.names:
+        return False, response_handler.get_invalid_parameters_response("accomodation_type")
     return True, None

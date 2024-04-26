@@ -124,3 +124,91 @@ class Comments(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     booking_id = models.ForeignKey(Booking, on_delete=models.CASCADE)
     comment_content = models.TextField()
+
+class VHVenue(models.Model):
+    class AccomodationType(models.TextChoices):
+        SINGLE = 'SINGLE', _('Single')
+        DOUBLE = 'DOUBLE', _('Double')
+        OTHER  = 'OTHER', _('Other')
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=50)
+    floor_number = models.IntegerField()
+    building_id = models.ForeignKey(Building, on_delete=models.SET_NULL, null=True)
+    accomodation_type = models.CharField(
+        max_length=50,
+        choices=AccomodationType.choices,
+        default=AccomodationType.OTHER,
+    )
+    authority_id = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    def __str__(self):
+        return self.name
+    
+
+class VHBooking(models.Model):
+    class BookingStatus(models.TextChoices):
+        PENDING = 'PENDING', _('Pending')
+        APPROVED = 'APPROVED', _('Approved')
+        REJECTED = 'REJECTED', _('Rejected')
+        CANCELLED = 'CANCELLED', _('Cancelled')
+        AUTOMATICALLY_DECLINED = 'AUTOMATICALLY_DECLINED', _('Automatically Declined')
+    
+    class VHBookingType(models.TextChoices):
+        INSTITUTE_GUEST='INSTITUTE_GUEST',_('Institute Guest')
+        OFFICIAL='OFFICIAL',_('Official')
+        PERSONAL='PERSONAL',_('PERSONAL')
+        
+    class RequestByType(models.TextChoices):
+        FACULTY='FACULTY',_('Faculty')
+        STAFF='STAFF',_('Staff')
+        OFFICER='OFFICER',_('Officer')
+        STUDENT='STUDENT',_('Student')
+        ALUMNI='ALUMNI',_('Alumni')
+        OTHER='OTHER',_('Other')
+    id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    venue_id = models.ForeignKey(VHVenue, on_delete=models.CASCADE)
+    booking_time = models.DateTimeField()
+    last_updated_time = models.DateTimeField()
+    user_address=models.TextField()
+    user_contact=models.CharField(max_length=10)
+    arrival_time=models.DateTimeField()
+    departure_time=models.DateTimeField()
+    rooms_required=models.IntegerField()
+    booking_purpose=models.TextField()
+    booking_status = models.CharField(
+        max_length=60,
+        choices=BookingStatus.choices,
+        default=BookingStatus.PENDING,
+    )
+    booking_type=models.CharField(
+        max_length=60,
+        choices=VHBookingType.choices,
+        default=VHBookingType.PERSONAL,
+    )
+    requestby=models.CharField(
+        max_length=60,
+        choices=RequestByType.choices,
+        default=RequestByType.OTHER,
+    )
+    id_proof=models.URLField(blank=True,null=True)
+    
+class VHBookingRequest(models.Model):
+    class RequestStatus(models.TextChoices):
+        PENDING_RECEIVE = 'PENDING_RECEIVE', _('Receive Pending')
+        RECEIVED = 'RECEIVED', _('Received')
+        REJECTED = 'REJECTED', _('Rejected')
+        APPROVED = 'APPROVED', _('Approved')
+        CANCELLED = 'CANCELLED', _('Cancelled')
+        AUTOMATICALLY_DECLINED = 'AUTOMATICALLY_DECLINED', _('Automatically Declined')
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    booking_id = models.ForeignKey(VHBooking, on_delete=models.CASCADE)
+    receiver_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    request_status = models.CharField(
+        max_length=60,
+        choices=RequestStatus.choices,
+        default=RequestStatus.PENDING_RECEIVE,
+    )
+
+    last_updated_time = models.DateTimeField()

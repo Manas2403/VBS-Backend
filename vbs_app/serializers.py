@@ -97,3 +97,54 @@ class CommentsSerializer(serializers.ModelSerializer):
             'booking_id',
             'comment_content',
         )
+class VHVenueSerializer(serializers.ModelSerializer):
+    building_id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    authority_id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    
+    class Meta:
+        model = models.VHVenue    
+        fields = (
+            'id',
+            'name',
+            'floor_number',
+            'building_id',
+            'accomodation_type',
+            'authority_id',
+        )
+class VHBookingSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    venue_id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    class Meta:
+        model = models.VHBooking
+        fields = (
+            'id',
+            'user_id',
+            'venue_id',
+            'booking_time',
+            'last_updated_time',
+            'user_address',
+            'user_contact',
+            'arrival_time',
+            'departure_time',
+            'rooms_required',
+            'booking_purpose',
+            'booking_status',
+            'booking_type',
+            'requestby',
+            'id_proof',
+        )    
+
+class VHBookingRequestSerializer(serializers.ModelSerializer):
+    booking_id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    receiver_id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+
+    class Meta:
+        model = models.VHBookingRequest
+        fields = (
+            'id',
+            'booking_id',
+            'receiver_id',
+            'request_status',
+            'last_updated_time',
+        )
+

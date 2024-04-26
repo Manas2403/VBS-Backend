@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from .models import Building, User, Venue, Booking, BookingRequest, Comments
+from .models import Building, User, Venue, Booking, BookingRequest, Comments,VHVenue,VHBooking,VHBookingRequest
 
 
 def check_user_exists(user_id):
@@ -356,3 +356,88 @@ def add_comment(user_id, booking_id, comment_content):
     )
     comment.save()
     return comment
+
+def get_all_vh_venues():
+    return VHVenue.objects.all()
+
+def get_vh_venue_by_building(building_id):
+    return VHVenue.objects.filter(building_id=building_id).order_by('name')
+
+def get_vh_venue_by_authority(authority_id):
+    return VHVenue.objects.filter(authority_id=authority_id).order_by('name')
+
+def get_vh_venue_by_name(name):
+    return VHVenue.objects.filter(name__contains=name)
+
+def get_vh_venue_by_id(venue_id):
+    return VHVenue.objects.get(id=venue_id)
+
+
+def check_vh_venue_exists(venue_id):
+    return VHVenue.objects.filter(id=venue_id).exists()
+
+def add_vh_venue(building_id, authority_id, name, floor_number, accomodation_type):
+    venue = VHVenue(
+        name=name,
+        building_id=get_building_by_id(building_id),
+        floor_number=floor_number,
+        accomodation_type=accomodation_type,
+        authority_id=get_user_by_id(authority_id)
+    )
+    venue.save()
+    return venue
+
+def update_vh_venue(venue, name, building_id, floor_number, accomodation_type,authority_id):
+    if name is not None:
+        venue.name = name
+    if building_id is not None:
+        venue.building_id = get_building_by_id(building_id)
+    if floor_number is not None:
+        venue.floor_number = floor_number
+    if accomodation_type is not None:
+        venue.accomodation_type = accomodation_type
+    if authority_id is not None:
+        venue.authority_id = get_user_by_id(authority_id)
+    venue.save()
+    return venue
+
+def delete_vh_venue(venue_id):
+    venue = get_vh_venue_by_id(venue_id)
+    VHVenue.objects.filter(venue_id=venue_id).delete()
+    venue.delete()
+    
+def get_vh_booking_by_user(user_id):
+        return VHBooking.objects.filter(user_id=user_id).order_by('booking_time')
+    
+def get_vh_booking_by_venue(venue_id):
+        return VHBooking.objects.filter(venue_id=venue_id).order_by('arrival_time')
+
+def check_vh_booking_exists(booking_id):
+    return VHBooking.objects.filter(id=booking_id).exists()
+
+def get_vh_booking_by_id(booking_id):
+    return VHBooking.objects.get(id=booking_id)
+
+def get_approved_vh_bookings_by_venue(venue_id, event_time):
+    bookings = get_vh_booking_by_venue(venue_id)
+    start_time = datetime(year=event_time.year, month=event_time.month, day=event_time.day)
+    end_time = start_time + timedelta(days=1)
+    return bookings.filter(booking_status=VHBooking.BookingStatus.APPROVED, event_time__range=(start_time, end_time))
+
+def get_approved_vh_bookings_by_venue_id(venue_id, event_time):
+    return get_approved_vh_bookings_by_venue(get_vh_venue_by_id(venue_id), event_time)
+
+
+
+def get_vh_booking_request_by_booking(booking_id):
+    return VHBookingRequest.objects.filter(booking_id=booking_id)
+
+def get_vh_booking_request_by_receiver(receiver_id):
+    return VHBookingRequest.objects.filter(receiver_id=receiver_id)
+
+def check_vh_booking_request_exists(booking_request_id):
+    return VHBookingRequest.objects.filter(id=booking_request_id).exists()
+
+
+def get_vh_booking_request_by_id(booking_request_id):
+    return VHBookingRequest.objects.get(id=booking_request_id)
