@@ -82,6 +82,13 @@ def validate_booking_type(booking_type):
         return False, response_handler.get_invalid_parameters_response("booking_type")
     return True, None
 
+def validate_vh_booking_type(booking_type):
+    if booking_type is None:
+        return False, response_handler.get_missing_parameters_response("booking_type")
+    if booking_type not in models.VHBooking.VHBookingType.names:
+        return False, response_handler.get_invalid_parameters_response("booking_type")
+    return True, None
+
 
 def validate_booking_request_id(booking_request_id):
     if booking_request_id is None:
@@ -115,4 +122,11 @@ def validate_accomodation_type(accomodation_type):
         return False, response_handler.get_missing_parameters_response("accomodation_type")
     if accomodation_type not in models.VHVenue.AccomodationType.names:
         return False, response_handler.get_invalid_parameters_response("accomodation_type")
+    return True, None
+
+def validate_vh_request_by_type(request_type):
+    if request_type is None:
+        return False, response_handler.get_missing_parameters_response("request_type")
+    if request_type not in models.VHBooking.RequestByType.names:
+        return False, response_handler.get_invalid_parameters_response("request_type")
     return True, None

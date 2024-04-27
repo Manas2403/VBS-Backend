@@ -22,6 +22,11 @@ def is_valid_email(email):
         return False
     return True
 
+def is_valid_phone_number(phone_number):
+    pat = r'\b[0-9]{10}\b'
+    if not re.match(pat, phone_number):
+        return False
+    return True
 
 def get_datetime_from_iso(iso_time):
     try:

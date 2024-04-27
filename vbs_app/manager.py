@@ -1,4 +1,6 @@
 from datetime import datetime, timedelta
+from email.mime import image
+import re
 
 from .models import Building, User, Venue, Booking, BookingRequest, Comments,VHVenue,VHBooking,VHBookingRequest
 
@@ -195,6 +197,11 @@ def get_pending_bookings_by_venue(venue_id, event_time):
     end_time = start_time + timedelta(days=1)
     return bookings.filter(booking_status=Booking.BookingStatus.PENDING, event_time__range=(start_time, end_time))
 
+def get_pending_vh_bookings_by_venue(venue_id, event_time):
+    bookings = get_vh_booking_by_venue(venue_id)
+    start_time = datetime(year=event_time.year, month=event_time.month, day=event_time.day)
+    end_time = start_time + timedelta(days=1)
+    return bookings.filter(booking_status=VHBooking.BookingStatus.PENDING, event_time__range=(start_time, end_time))
 
 def get_approved_bookings_by_venue_id(venue_id, event_time):
     return get_approved_bookings_by_venue(get_venue_by_id(venue_id), event_time)
@@ -220,6 +227,23 @@ def add_new_booking(user_id, venue_id, booking_type, event_time, event_duration,
     booking.save()
     return booking
 
+def add_new_vh_booking(user_id,booking_type, arrival_time, departure_time, rooms_required, booking_purpose, requestby, user_address, user_contact, image_url):
+    booking = VHBooking(
+        user_id=get_user_by_id(user_id),
+        booking_time=datetime.now(),
+        last_updated_time=datetime.now(),
+        user_address=user_address,
+        user_contact=user_contact,
+        arrival_time=arrival_time,
+        departure_time=departure_time,
+        rooms_required=rooms_required,
+        booking_purpose=booking_purpose,
+        booking_type=booking_type,
+        requestby=requestby,
+        id_proof=image_url,
+    )
+    booking.save()
+    return booking
 
 def update_booking(booking_id, booking_type, expected_strength, title, description):
     booking = get_booking_by_id(booking_id)
@@ -239,6 +263,13 @@ def update_booking(booking_id, booking_type, expected_strength, title, descripti
 def update_booking_time(booking, event_time, duration):
     booking.event_time = event_time
     booking.event_duration = duration
+    booking.save()
+    return booking
+
+
+def update_vh_booking_time(booking, arrival_time, departure_time):
+    booking.arrival_time = arrival_time
+    booking.departure_time = departure_time
     booking.save()
     return booking
 
@@ -305,11 +336,21 @@ def add_booking_request(booking, user):
     )
     booking_request.save()
 
+def add_vh_booking_request(booking, user):
+    booking_request = VHBookingRequest(
+        booking_id=booking,
+        receiver_id=user,
+        last_updated_time=datetime.now()
+    )
+    booking_request.save()
+
+
 
 def update_booking_request(booking_request, request_status):
     booking_request.request_status = get_booking_request_status_from_str(request_status)
     booking_request.last_updated_time = datetime.now()
     booking_request.save()
+
 
 
 def get_booking_request_status_from_str(request_status):
@@ -326,7 +367,32 @@ def get_booking_request_status_from_str(request_status):
     if request_status == "AUTOMATICALLY_DECLINED":
         return BookingRequest.RequestStatus.AUTOMATICALLY_DECLINED
 
+def get_vh_booking_request_status_from_str(request_status):
+    if request_status == "PENDING_RECEIVE":
+        return BookingRequest.RequestStatus.PENDING_RECEIVE
+    if request_status == "RECEIVED":
+        return BookingRequest.RequestStatus.RECEIVED
+    if request_status == "REJECTED":
+        return BookingRequest.RequestStatus.REJECTED
+    if request_status == "APPROVED":
+        return BookingRequest.RequestStatus.APPROVED
+    if request_status == "CANCELLED":
+        return BookingRequest.RequestStatus.CANCELLED
+    if request_status == "AUTOMATICALLY_DECLINED":
+        return BookingRequest.RequestStatus.AUTOMATICALLY_DECLINED
 
+def get_vh_booking_status_from_str(request_status):
+    if request_status == "PENDING":
+        return VHBooking.BookingStatus.PENDING
+    if request_status == "REJECTED":
+        return VHBooking.BookingStatus.REJECTED
+    if request_status == "APPROVED":
+        return VHBooking.BookingStatus.APPROVED
+    if request_status == "CANCELLED":
+        return VHBooking.BookingStatus.CANCELLED
+    if request_status == "AUTOMATICALLY_DECLINED":
+        return VHBooking.BookingStatus.AUTOMATICALLY_DECLINED
+    
 def check_comment_exists(comment_id):
     return Comments.objects.filter(id=comment_id).exists()
 
@@ -403,7 +469,6 @@ def update_vh_venue(venue, name, building_id, floor_number, accomodation_type,au
 
 def delete_vh_venue(venue_id):
     venue = get_vh_venue_by_id(venue_id)
-    VHVenue.objects.filter(venue_id=venue_id).delete()
     venue.delete()
     
 def get_vh_booking_by_user(user_id):
@@ -441,3 +506,19 @@ def check_vh_booking_request_exists(booking_request_id):
 
 def get_vh_booking_request_by_id(booking_request_id):
     return VHBookingRequest.objects.get(id=booking_request_id)
+
+
+def cancel_vh_booking(booking):
+    booking.booking_status = get_vh_booking_status_from_str("CANCELLED")
+    booking.save()
+    return booking  
+
+def update_vh_booking_request(booking_request, request_status):
+    booking_request.request_status = get_vh_booking_request_status_from_str(request_status)
+    booking_request.last_updated_time = datetime.now()
+    booking_request.save()
+    
+def update_vh_booking_status(booking, booking_status):
+    booking.booking_status = get_vh_booking_status_from_str(booking_status)
+    booking.last_updated_time = datetime.now()
+    booking.save()

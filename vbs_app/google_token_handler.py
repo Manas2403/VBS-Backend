@@ -2,9 +2,11 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 import firebase_admin
 from firebase_admin import credentials, auth
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-
-CLIENT_ID = "575828521972-m8fu4782d5k11fgo54gnntqsugpsbur2.apps.googleusercontent.com"
+CLIENT_ID = os.getenv("CLIENT_ID")
 
 cred = credentials.Certificate("venue-booking-system-e6b2f-firebase-adminsdk-4s58y-8e2a3e3c1d.json")
 firebase_admin.initialize_app(cred)

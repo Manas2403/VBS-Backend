@@ -1,6 +1,7 @@
 from django.urls import path
 
 from vbs_app.request_handlers.building_rh import AddNewBuildingAPIView, UpdateNewBuildingAPIView
+from vbs_app.request_handlers.vh_booking_rh import AddNewVHBookingAPIView
 from . import views
 
 urlpatterns = [
@@ -62,5 +63,7 @@ urlpatterns = [
     path('vhbookings/bookingRequests/byBooking/<str:booking_id>/', views.get_vh_booking_requests_by_booking),
     path('vhbookings/bookingRequests/byReceiver/<str:receiver_id>/', views.get_vh_booking_requests_by_receiver),
     path('vhbookings/bookingRequests/details/<str:booking_request_id>/', views.get_vh_booking_request),
-    
+    path('vhbookings/add/', AddNewVHBookingAPIView.as_view(), name='add-vh-bookings'),
+    path('vhbookings/bookingRequests/update/', views.update_vh_booking_request),
+   
 ]

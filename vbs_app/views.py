@@ -325,3 +325,6 @@ def get_vh_booking_request(request, booking_request_id):
         'booking_request_id': booking_request_id
     })
 
+@api_view(['GET', 'POST'])
+def update_vh_booking_request(request):
+    return vh_booking_rh.VHBookingRequestHandler().handle_request(request, vh_booking_rh.RequestType.UPDATE_VH_BOOKING_REQUEST)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 import uuid
+from django.contrib.postgres.fields import ArrayField
 
 
 # Create your models here.
@@ -155,7 +156,7 @@ class VHBooking(models.Model):
     class VHBookingType(models.TextChoices):
         INSTITUTE_GUEST='INSTITUTE_GUEST',_('Institute Guest')
         OFFICIAL='OFFICIAL',_('Official')
-        PERSONAL='PERSONAL',_('PERSONAL')
+        PERSONAL='PERSONAL',_('Personal')
         
     class RequestByType(models.TextChoices):
         FACULTY='FACULTY',_('Faculty')
@@ -166,7 +167,6 @@ class VHBooking(models.Model):
         OTHER='OTHER',_('Other')
     id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    venue_id = models.ForeignKey(VHVenue, on_delete=models.CASCADE)
     booking_time = models.DateTimeField()
     last_updated_time = models.DateTimeField()
     user_address=models.TextField()
@@ -191,6 +191,10 @@ class VHBooking(models.Model):
         default=RequestByType.OTHER,
     )
     id_proof=models.URLField(blank=True,null=True)
+    venues = ArrayField(
+    models.UUIDField(),  
+    default=list,   
+)
     
 class VHBookingRequest(models.Model):
     class RequestStatus(models.TextChoices):

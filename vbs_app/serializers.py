@@ -113,13 +113,12 @@ class VHVenueSerializer(serializers.ModelSerializer):
         )
 class VHBookingSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    venue_id = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    venues = serializers.ListField(child=serializers.UUIDField())
     class Meta:
         model = models.VHBooking
         fields = (
             'id',
             'user_id',
-            'venue_id',
             'booking_time',
             'last_updated_time',
             'user_address',
@@ -132,6 +131,7 @@ class VHBookingSerializer(serializers.ModelSerializer):
             'booking_type',
             'requestby',
             'id_proof',
+            'venues',
         )    
 
 class VHBookingRequestSerializer(serializers.ModelSerializer):

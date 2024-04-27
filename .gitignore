@@ -1,6 +1,6 @@
 __init__.py
 db.sqlite3
-
+.env
 vbs_backend/__init__.py
 
 vbs_app/request_handlers/__init__.py
